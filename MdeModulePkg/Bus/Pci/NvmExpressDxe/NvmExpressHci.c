@@ -937,6 +937,8 @@ NvmeControllerInit (
   DEBUG ((EFI_D_INFO, "    SQES      : 0x%x\n", Private->ControllerData->Sqes));
   DEBUG ((EFI_D_INFO, "    CQES      : 0x%x\n", Private->ControllerData->Cqes));
   DEBUG ((EFI_D_INFO, "    NN        : 0x%x\n", Private->ControllerData->Nn));
+  DEBUG ((DEBUG_INFO, "    TNVMCAP(high-8byte) : 0x%lx\n", *((UINT64*)(Private->ControllerData->Tnvmcap+8))));
+  DEBUG ((DEBUG_INFO, "    TNVMCAP(low-8byte)  : 0x%lx\n", *((UINT64*)Private->ControllerData->Tnvmcap)));
 
   //
   // Create two I/O completion queues.
