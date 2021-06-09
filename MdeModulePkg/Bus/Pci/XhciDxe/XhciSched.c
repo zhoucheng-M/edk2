@@ -3959,7 +3959,6 @@ XhcEvaluateContext64 (
   // 4.6.7 Evaluate Context
   //
   InputContext = Xhc->UsbDevContext[SlotId].InputContext;
-  ZeroMem (InputContext, sizeof (INPUT_CONTEXT_64));
 
   InputContext->InputControlContext.Dword2 |= BIT1;
   InputContext->EP[0].MaxPacketSize         = MaxPacketSize;
