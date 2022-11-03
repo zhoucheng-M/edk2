@@ -558,6 +558,20 @@ XhcSetRootHubPortFeature (
       State |= XHC_PORTSC_RESET;
       XhcWriteOpReg (Xhc, Offset, State);
       XhcWaitOpRegBit (Xhc, Offset, XHC_PORTSC_PRC, TRUE, XHC_GENERIC_TIMEOUT);
+
+      //
+      // Usb 3.2 spec 7.5.2
+      // When the USB state machine is Inactive state, the device is abnormal.
+      // eSS.Inactive is a state where a link has failed Enhanced SuperSpeed operation.Software
+      // is required for warm reset intervention.This flag only applies to USB3 protocol ports.
+      //
+      State = XhcReadOpReg (Xhc, Offset);
+      if ((((State & 0x1e0) >> 5) == 6) && ((State & 3) == 0)) {
+        State |= 0x80000000;
+        XhcWriteOpReg (Xhc, Offset, State);
+        XhcWaitOpRegBit (Xhc, Offset, XHC_PORTSC_PRC, TRUE, XHC_GENERIC_TIMEOUT);
+        DEBUG ((DEBUG_INFO, "Warm Reset Successful! \n"));
+      }
       break;
 
     case EfiUsbPortPower:
